@@ -4,6 +4,7 @@ import { Transaction } from "./types/transaction";
 import {
   addTransaction,
   clearTransactions,
+  getStatistics,
 } from "./services/transactionService";
 
 dotenv.config();
@@ -39,11 +40,24 @@ app.delete("/transacao", (req: express.Request, res: express.Response) => {
   try {
     clearTransactions();
     res.sendStatus(200);
+    return
   } catch (error) {
     console.error("Erro ao limpar transações:", error);
     res.sendStatus(400);
+    return;
   }
 });
+
+app.get('/estatistica', (req, res) => {
+  try {
+    const statistics = getStatistics();
+    res.json(statistics);
+    return;
+  } catch (error) {
+    console.error("Erro ao obter estatísticas:", error);
+    res.sendStatus(400);
+  }
+})
 
 app.listen(process.env.PORT, () => {
   console.log(
