@@ -1,7 +1,10 @@
 import express from "express";
 import dotenv from "dotenv";
 import { Transaction } from "./types/transaction";
-import { addTransaction } from "./services/transactionService";
+import {
+  addTransaction,
+  clearTransactions,
+} from "./services/transactionService";
 
 dotenv.config();
 
@@ -29,6 +32,16 @@ app.post("/transacao", (req: express.Request, res: express.Response) => {
     console.log(error);
     res.sendStatus(400);
     return;
+  }
+});
+
+app.delete("/transacao", (req: express.Request, res: express.Response) => {
+  try {
+    clearTransactions();
+    res.sendStatus(200);
+  } catch (error) {
+    console.error("Erro ao limpar transações:", error);
+    res.sendStatus(400);
   }
 });
 
